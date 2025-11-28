@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "Create booking",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "serviceId": "1",
+        "serviceName": "Классический сеанс",
+        "date": "2025-12-15",
+        "time": "14:00",
+        "name": "Иван Петров",
+        "phone": "+7 (999) 123-45-67",
+        "message": "Первый раз"
+      },
+      "expectedStatus": 201,
+      "bodyMatcher": "ignore"
+    },
+    {
+      "name": "Get all bookings",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "ignore"
+    }
+  ]
+}

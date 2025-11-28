@@ -56,7 +56,7 @@ export default function Index() {
   const [message, setMessage] = useState('');
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!date || !selectedService || !selectedTime || !name || !phone) {
@@ -68,17 +68,47 @@ export default function Index() {
       return;
     }
 
-    toast({
-      title: "Запись успешно отправлена",
-      description: `Анастасия свяжется с вами в ближайшее время для подтверждения`,
-    });
+    const selectedServiceData = services.find(s => s.id === selectedService);
+    
+    try {
+      const response = await fetch('https://functions.poehali.dev/309c1adf-a889-4989-80aa-dc071ae6902d', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          serviceId: selectedService,
+          serviceName: selectedServiceData?.name || '',
+          date: format(date, 'yyyy-MM-dd'),
+          time: selectedTime,
+          name: name,
+          phone: phone,
+          message: message,
+        }),
+      });
 
-    setDate(undefined);
-    setSelectedService('');
-    setSelectedTime('');
-    setName('');
-    setPhone('');
-    setMessage('');
+      if (!response.ok) {
+        throw new Error('Ошибка при отправке записи');
+      }
+
+      toast({
+        title: "Запись успешно отправлена",
+        description: `Анастасия свяжется с вами в ближайшее время для подтверждения`,
+      });
+
+      setDate(undefined);
+      setSelectedService('');
+      setSelectedTime('');
+      setName('');
+      setPhone('');
+      setMessage('');
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось отправить заявку. Попробуйте позже.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
