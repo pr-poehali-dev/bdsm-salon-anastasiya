@@ -303,7 +303,7 @@ export default function Index() {
             Работаю ежедневно с 10:00 до 23:00
           </p>
           <div className="flex justify-center gap-6 text-sm text-muted-foreground">
-            <span>Москва, конфиденциальный адрес</span>
+            <span>Химки, конфиденциальный адрес</span>
             <span>•</span>
             <span>Только по предварительной записи</span>
           </div>
